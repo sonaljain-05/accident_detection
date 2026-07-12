@@ -1,4 +1,3 @@
-
 import streamlit as st
 import numpy as np
 from tensorflow.keras.applications import VGG16
@@ -6,7 +5,8 @@ from tensorflow.keras.layers import GlobalAveragePooling2D, Dense
 from tensorflow.keras.models import Sequential
 from PIL import Image
 
-st.set_page_config(page_title="Plant Disease Detection", page_icon="🌿")
+# Update page configuration for Accident Detection
+st.set_page_config(page_title="Accident Detection System", page_icon="🚨")
 
 # -----------------------------
 # Build Model
@@ -29,6 +29,8 @@ model = Sequential([
 # -----------------------------
 # Load Classifier Weights
 # -----------------------------
+# Note: Ensure your 'classifier_head_weights.npz' file contains the 
+# weights trained specifically for your accident dataset.
 weights = np.load("classifier_head_weights.npz")
 
 model.layers[2].set_weights([
@@ -53,11 +55,11 @@ def preprocess(image):
 # -----------------------------
 # Streamlit UI
 # -----------------------------
-st.title("🌿 Plant Disease Detection")
-st.write("Upload a leaf image to predict whether it is Healthy or Diseased.")
+st.title("🚨 Accident Detection System")
+st.write("Upload a traffic or road CCTV snapshot to check for an accident.")
 
 uploaded_file = st.file_uploader(
-    "Choose a leaf image",
+    "Choose a road image",
     type=["jpg", "jpeg", "png"]
 )
 
@@ -65,9 +67,9 @@ if uploaded_file is not None:
 
     image = Image.open(uploaded_file).convert("RGB")
 
-    st.image(image, caption="Uploaded Image", use_container_width=True)
+    st.image(image, caption="Uploaded Snapshot", use_container_width=True)
 
-    if st.button("Predict"):
+    if st.button("Analyze Image"):
 
         processed = preprocess(image)
 
@@ -75,9 +77,10 @@ if uploaded_file is not None:
 
         probability = prediction[0][0]
 
+        # Assumes high probability (> 0.5) means an accident is present
         if probability > 0.5:
-            st.error("🌱 Prediction: Diseased")
+            st.error("💥 Prediction: Accident Detected")
             st.write(f"Confidence: {probability*100:.2f}%")
         else:
-            st.success("🍃 Prediction: Healthy")
+            st.success("🛣️ Prediction: Normal Traffic / No Accident")
             st.write(f"Confidence: {(1-probability)*100:.2f}%")
