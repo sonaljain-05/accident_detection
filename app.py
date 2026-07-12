@@ -1,7 +1,6 @@
 
 import streamlit as st
 import numpy as np
-import tensorflow as tf
 from tensorflow.keras.applications import VGG16
 from tensorflow.keras.layers import GlobalAveragePooling2D, Dense
 from tensorflow.keras.models import Sequential
