@@ -77,10 +77,11 @@ if uploaded_file is not None:
 
         probability = prediction[0][0]
 
-        # Assumes high probability (> 0.5) means an accident is present
+       
+       
         if probability > 0.5:
-            st.error("💥 Prediction: Accident Detected")
+            st.success("🛣️ Prediction: Normal Traffic / No Accident")
             st.write(f"Confidence: {probability*100:.2f}%")
         else:
-            st.success("🛣️ Prediction: Normal Traffic / No Accident")
+            st.error("💥 Prediction: Accident Detected")
             st.write(f"Confidence: {(1-probability)*100:.2f}%")
